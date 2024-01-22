@@ -102,7 +102,59 @@ private void backtrack(List<List<Integer>> list, List<Integer> tempList, int [] 
 }
 }
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-5.
+5.Remove Invalid Parentheses
+
+class Solution {
+    public boolean isValid(String s){
+        int count = 0;
+        for(char c : s.toCharArray()){
+            if(c =='('){
+                count++;
+            }else if(c==')'){
+                count--;
+                if(count<0){
+                    return false;
+                }
+            }
+        }
+        return count==0;
+    }
+    public List<String> removeInvalidParentheses(String s) {
+        List<String> ans = new ArrayList<>();
+        if(s.length()==0){
+            ans.add("");
+            return ans;
+        }
+        Queue<String> q = new LinkedList<>();
+        q.add(s);
+        Set<String> set = new HashSet<>();
+         set.add(s);
+        boolean level = false;
+        while(!q.isEmpty()){
+            
+            String curr = q.poll();
+            if(isValid(curr)){
+               ans.add(curr);
+               level = true;
+            }
+
+            if(level){
+                continue;
+            }
+
+            for(int i=0;i<curr.length();i++){
+                if((curr.charAt(i)=='(') || (curr.charAt(i)==')')){
+                    String str = curr.substring(0,i) + curr.substring(i+1);
+                    if(!set.contains(str)){
+                        q.offer(str);
+                        set.add(str);
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+}
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 6.Letter Combinations of a Phone Number
 
